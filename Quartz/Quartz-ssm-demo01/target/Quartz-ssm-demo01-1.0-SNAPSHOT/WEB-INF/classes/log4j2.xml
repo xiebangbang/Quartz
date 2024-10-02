@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<configuration status="OFF">
+	<properties>
+		<property name="LOG_HOME">D:/logs</property>
+		<property name="LOG_NAME">quartz-ssm</property>
+	</properties>
+
+	<appenders>
+		<!-- 控制台日志 -->
+		<Console name="Console" target="SYSTEM_OUT">
+
+			<!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+			<ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+			<PatternLayout  charset="UTF-8" pattern="%d{HH:mm:ss.SSS} %-5level [%thread][%logger{0}] %m%n" />
+		</Console>
+		
+		<!-- 文件日志 -->
+		<RollingRandomAccessFile name="RollingFile" fileName="${LOG_HOME}/${LOG_NAME}.log"
+			filePattern="${LOG_HOME}/${LOG_NAME}.%d{yyyy-MM-dd}.log.gz">
+
+			<!--文件只记录level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+			<ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+			<PatternLayout  charset="UTF-8" pattern="%d{HH:mm:ss.SSS} %-5level [%thread][%logger{0}] %m%n" />
+
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+			</Policies>
+		</RollingRandomAccessFile>
+		
+		<!-- 文件日志异步输出 -->
+		<Async name="Async" bufferSize="2048">
+			<appender-ref ref="RollingFile" /> 
+		</Async>
+	</appenders>
+		
+	<loggers>
+		<root level="INFO">
+			<appender-ref ref="RollingFile" />
+			<appender-ref ref="Console" />
+		</root>
+	</loggers>
+</configuration>  

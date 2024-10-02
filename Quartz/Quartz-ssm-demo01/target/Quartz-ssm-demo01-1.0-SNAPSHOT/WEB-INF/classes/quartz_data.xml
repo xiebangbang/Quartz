@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+           http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--Quartz-->
+    <bean name="myJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="cn.itheima.quartz.job.HelloJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+    <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <property name="jobDetail" ref="myJobDetail"/>
+        <property name="startDelay" value="0"/>
+        <property name="repeatInterval" value="5000"/>
+        <property name="repeatCount" value="3"/>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="jobDetails">
+            <list>
+                <ref bean="myJobDetail"/>
+            </list>
+        </property>
+        <property name="triggers">
+            <list>
+                <ref bean="simpleTrigger"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean name="myJobDetail2" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="cn.itheima.quartz.job.HelloJob2"/>
+        <property name="durability" value="true"/>
+    </bean>
+    <bean id="simpleTrigger2" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <property name="jobDetail" ref="myJobDetail2"/>
+        <property name="startDelay" value="0"/>
+        <property name="repeatInterval" value="10000"/>
+        <property name="repeatCount" value="3"/>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="jobDetails">
+            <list>
+                <ref bean="myJobDetail2"/>
+            </list>
+        </property>
+        <property name="triggers">
+            <list>
+                <ref bean="simpleTrigger2"/>
+            </list>
+        </property>
+    </bean>
+
+</beans>
